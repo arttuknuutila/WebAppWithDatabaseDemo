@@ -223,7 +223,7 @@ stages:
       displayName: Deploy ARM templates
       inputs:
         deploymentScope: 'Resource Group'
-        azureResourceManagerConnection: 'az-resource-mgr'
+        azureResourceManagerConnection: 'az-generic-mgr'
         subscriptionId: '0a27a507-ec1e-4c20-b790-22de2cce8ed6'
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(ResourceGroupName)'
@@ -239,7 +239,7 @@ stages:
       enabled: ${{ parameters.runCompletePipeline }}
       continueOnError: true
       inputs:
-        ConnectedServiceNameARM: 'az-resource-mgr'
+        ConnectedServiceNameARM: 'az-generic-mgr'
         GenerateMethodParameterSetSelection: 'ResourceGroupName'
         ResourceGroupName: '$(ResourceGroupName)'
         SubscriptionId: '0a27a507-ec1e-4c20-b790-22de2cce8ed6'
