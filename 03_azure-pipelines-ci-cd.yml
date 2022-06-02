@@ -140,7 +140,7 @@ stages:
   displayName: Create & Deploy to Dev
   dependsOn: Build_Stage
   variables:
-    azureSubscription: 'az-demo-subscription' # couldn't be referenced
+    azureSubscription: 'az-generic-mgr' # couldn't be referenced
     ResourceGroupName: '$(Prefix)-$(Release.EnvironmentName)-$(UniqueId)-RG'
     Database.Admin: 'testuser'
     Database.Password: '@Aa123456' # to be secured in Key Vault
@@ -171,7 +171,7 @@ stages:
       displayName: Validate ARM templates
       enabled: ${{ parameters.runCompletePipeline }}
       inputs:
-        azureSubscription: 'az-demo-subscription'
+        azureSubscription: 'az-generic-mgr'
         action: 'Create Or Update Resource Group'
         resourceGroupName: '$(ResourceGroupName)'
         location: 'West Europe'
@@ -213,7 +213,7 @@ stages:
       displayName: Preview Template Changes (What-If)
       inputs:
         workingDirectory: $(System.DefaultWorkingDirectory)/arm/
-        azureSubscription: 'az-demo-subscription'
+        azureSubscription: 'az-generic-mgr'
         scriptType: 'bash'
         scriptLocation: 'inlineScript'
         inlineScript: 'az deployment group what-if --resource-group $(ResourceGroupName) --name rollout01 --template-file  WebSiteSQLDatabase.json --parameters WebSiteSQLDatabase.parameters.json'
@@ -239,7 +239,7 @@ stages:
       enabled: ${{ parameters.runCompletePipeline }}
       continueOnError: true
       inputs:
-        ConnectedServiceNameARM: 'WebAppWithDatabaseDemo_spn'
+        ConnectedServiceNameARM: 'az-resource-mgr'
         GenerateMethodParameterSetSelection: 'ResourceGroupName'
         ResourceGroupName: '$(ResourceGroupName)'
         SubscriptionId: '0a27a507-ec1e-4c20-b790-22de2cce8ed6'
@@ -266,7 +266,7 @@ stages:
     - task: AzureRmWebAppDeployment@3
       displayName: Deploy WebApp to Azure
       inputs:
-        azureSubscription: 'az-demo-subscription'
+        azureSubscription: 'az-generic-mgr'
         appType: 'app'
         WebAppName: '$(WebAppName)'
         Package: '$(System.DefaultWorkingDirectory)/drop/WebApp.zip'
@@ -285,7 +285,7 @@ stages:
     - task: SqlAzureDacpacDeployment@1
       displayName: Deploy DacPac to SQL Azure
       inputs:
-        azureSubscription: 'az-demo-subscription'
+        azureSubscription: 'az-generic-mgr'
         AuthenticationType: 'server'
         ServerName: '$(SqlServerName).database.windows.net,1433'
         DatabaseName: '$(Database.Name)'
